@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="https://kit.fontawesome.com/5f97c40230.js" crossorigin="anonymous"></script> -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+      integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/style.css">
+    <title>PDF Viewer</title>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="box">
+            <div class="btn-box">
+                <button class="btn" id="prev-page">
+                    <i class="fas fa-arrow-circle-left"  id="left-arrow"></i> Prev Page
+                </button>
+                <button class="btn" id="next-page">
+                    Next Page <i class="fas fa-arrow-circle-right" id="right-arrow"></i>
+                </button>
+            </div>
+    
+                <span class="page-info">
+                    Page <span id="page-num"></span> of <span id="page-count"></span>
+                </span>
+        </div>
+    </div>
+
+    <canvas id="pdf-render"></canvas>
+    
+    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
