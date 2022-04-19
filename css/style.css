@@ -88,7 +88,7 @@
     background-color: rgb(95, 93, 93);
     border: 1px solid coral;
     border-radius: 5px;
-    padding: 0.6rem 0.7rem;
+    padding: 0.57rem 0.7rem;
 }
 
 .page-info {
@@ -99,6 +99,11 @@
 #page-num {
     margin: 0 3px;
 }
+
+#second-page-num {
+    margin: 0 3px;
+}
+
 
 #page-count {
     margin-left: 5px;
@@ -113,7 +118,6 @@
 
 canvas {
     margin-top: 10px;
-    margin-left: 20px;
     border: 1px solid #000;
 }
 
@@ -121,4 +125,5 @@ canvas {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0 10px;
 }

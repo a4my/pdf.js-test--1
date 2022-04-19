@@ -4,38 +4,65 @@ let pdfDoc= null,
     pageNum = 1,
     pageIsRendering = false,
     pageNumIsPending = null,
-    scale = 1.5;
+    scale = 1.4;
 
-const canvas = document.querySelector('#pdf-render'),
-    ctx = canvas.getContext('2d')
+const canvas = document.querySelector('#pdf-render')
+const secondCanvas = document.querySelector('#pdf-render-2')
+const ctx = canvas.getContext('2d')
+const ctx2 = secondCanvas.getContext('2d')
 
 // Render the page
 const renderPage = (num) => {
-    pageIsRendering = true
+    if(num % 2 !== 0) {
+        pageIsRendering = true
+        // Get the page
+        pdfDoc.getPage(num).then(page => {
+                // Set Scale
+                const viewport = page.getViewport({ scale })
+                canvas.height = viewport.height
+                canvas.width = viewport.width
+        
+                const renderCtx = {
+                    canvasContext: ctx,
+                    viewport
+                }
+        
+                page.render(renderCtx).promise.then(() => {
+                    pageIsRendering = false
+        
+                    if(pageNumIsPending !== null) {
+                        renderPage(pageNumIsPending)
+                        pageNumIsPending = null
+                    }
+                })
+                // Output current page 
+                document.querySelector('#page-num').textContent = num
+        }) 
 
-    // Get the page
-    pdfDoc.getPage(num).then(page => {
-        // Set Scale
-        const viewport = page.getViewport({ scale })
-        canvas.height = viewport.height
-        canvas.width = viewport.width
-
-        const renderCtx = {
-            canvasContext: ctx,
-            viewport
-        }
-
-        page.render(renderCtx).promise.then(() => {
-            pageIsRendering = false
-
-            if(pageNumIsPending !== null) {
-                renderPage(pageNumIsPending)
-                pageNumIsPending = null
-            }
-        })
-        // Output current page 
-        document.querySelector('#page-num').textContent = num
-    })
+        let secondPage = num + 1
+        pdfDoc.getPage(secondPage).then(page => {
+                // Set Scale
+                const viewport = page.getViewport({ scale })
+                secondCanvas.height = viewport.height
+                secondCanvas.width = viewport.width
+        
+                const renderCtx = {
+                    canvasContext: ctx2,
+                    viewport
+                }
+        
+                page.render(renderCtx).promise.then(() => {
+                    pageIsRendering = false
+        
+                    if(pageNumIsPending !== null) {
+                        renderPage(pageNumIsPending)
+                        pageNumIsPending = null
+                    }
+                })
+                // Output current page 
+                document.querySelector('#second-page-num').textContent = secondPage
+        })     
+    }
 }
 
 // Check for pages rendering
@@ -68,16 +95,14 @@ const showNextPage = () => {
 // Zoom out
 function zoomOut() {
     scale -= 0.1
-    console.log(scale)
     renderPage(pageNum)
-}
+    }
 
 // Zoom in
 function zoomIn() {
     scale += 0.1
-    console.log(scale)
     renderPage(pageNum)
-}
+    }
 
 // Get Document
 pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
@@ -86,7 +111,7 @@ pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
     document.querySelector('#page-count').textContent = pdfDoc.numPages
 
     renderPage(pageNum)
-})
+    })
     .catch(err => {
         // Display error
         const div = document.createElement('div')
